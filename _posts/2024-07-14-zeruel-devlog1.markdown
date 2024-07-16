@@ -160,11 +160,11 @@ However, there is one way we can circumvent all of this trouble and it's by usin
 
 Anyone can become their own CA, create key pairs, and sign certificates. It's quite simple really, this is how Zeruel's CA certificate is created using OpenSSL:
 
-```
+
 openssl genrsa -out zeruelCA.key 2048 # Generate private key
 
 openssl req -new -x509 -days 3650 -key zeruelCA.key -out zeruelCA.crt -subj "/CN=zeruelproxy CA/C=US" # Create self-signed certificate
-```
+
 
 NOTE: If you want a more detailed guide on how to setup your own CA I highly recommend reading through this [gist](https://gist.github.com/soarez/9688998)
 
