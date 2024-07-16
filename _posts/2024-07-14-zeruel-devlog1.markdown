@@ -25,7 +25,7 @@ When writing the proxy I decided to use sockets, admittedly I could've probably 
 
 First thigns first, let's setup our proxy server to capture and forward our requests to the remote server.
 
-```python
+{% highlight python %}
     def run(self):
         self.running = True
         try:
@@ -44,7 +44,7 @@ First thigns first, let's setup our proxy server to capture and forward our requ
             print(e)
             self.stop()
         self.handle_client()
-```
+{% endhighlight %}
 
 In the code above a socket is created and it's options are set so that it can be reused for new socket bindings rapidly,
 then it is bound to `127.0.0.1` and the desired port, I've decided to default the port to `7121` for Zeruel.
@@ -53,7 +53,7 @@ If no exceptions are raised then `handle_client()` is called.
 
 First the proxy must accept incoming connections from the browser
 
-```python
+{% highlight python %}
     def handle_client(self):
 
         while self.running:
@@ -68,12 +68,12 @@ First the proxy must accept incoming connections from the browser
             except Exception as e:
                 print(e)
                 self.stop()
-```
+{% endhighlight %}
 
 
 If a connection is succesfully achieved the proxy can begin to receive data through the new socket through which the server can communicate with the client, while the old socket stays open listening for new connections.
 
-```python
+{% highlight python %}
             try:
                 self.client_data = self.client_socket.recv(self.buffer_size)
                 request = self.parse_data(self.client_data)
@@ -95,11 +95,11 @@ If a connection is succesfully achieved the proxy can begin to receive data thro
                         send_data_thread.start()
             except socket.error as e:
                 logger.exception(f"Exception {e} | Server ID: {self.id} |\nData: {request}")
-```
+{% endhighlight %}
 
 The received data is then passed to the parser, which returns a dictionary that is then used to forward the request to the remote server.
 
-```python
+{% highlight python %}
     def send_data(self, hostname: str, port: int, data: bytes, method: str = None):
 
         try:
@@ -115,7 +115,7 @@ The received data is then passed to the parser, which returns a dictionary that 
                         break
                     print(f"chunk{chunk}\n")
                     self.client_socket.send(chunk)  # send back to browser
-```
+{% endhighlight %}
 
 In the code above a new socket is created for the remote connection, the request we got from the browser (which is passed as the `data` arg) is then forwarded to the remote host.
 Then, once a response if received from the remote host, it is sent back through the client socket to the browser.
@@ -175,7 +175,7 @@ For that, it needs to:
 
 - Generate a new key pair
 
-```python
+{% highlight python %}
     def generate_keypair(path=None):
         key = crypto.PKey()
         key.generate_key(crypto.TYPE_RSA, 2048)
@@ -183,10 +183,10 @@ For that, it needs to:
             with open(path, 'w+') as key_file:
                 key_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key).decode("utf-8"))
         return key
-```
+{% endhighlight %}
 - Create a Certificate Signing Request (CSR)
 
-```python
+{% highlight python %}
     def generate_csr(self, hostname, key, path=None):
         """
         :param hostname: Subject root hostname to use when adding SANs
@@ -211,12 +211,12 @@ For that, it needs to:
             with open(path, 'w+') as csr_file:
                 csr_file.write(crypto.dump_certificate_request(crypto.FILETYPE_PEM, csr).decode("utf-8"))
         return csr
-```
+{% endhighlight %}
 
 - Finally, generate the certificate
 
 
-```python
+{% highlight python %}
     def generate_certificate(self, hostname: str):
 
         # ref: https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl
@@ -264,7 +264,7 @@ For that, it needs to:
             cert_file.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode("utf-8"))
 
         return cert_file_path, key_file_path
-```
+{% endhighlight %}
 
 The proxy is now able to generate certificates for each host dynamically and can now handle HTTPS connections between it and the browser. Because we are our own CA and have access to the private key the proxy is able to decrypt all incoming data from the browser. 
 
