@@ -160,10 +160,9 @@ However, there is one way we can circumvent all of this trouble and it's by usin
 
 Anyone can become their own CA, create key pairs, and sign certificates. It's quite simple really, this is how Zeruel's CA certificate is created using OpenSSL
 
+openssl genrsa -out zeruelCA.key 2048 # Generate private key
 
-`openssl genrsa -out zeruelCA.key 2048 # Generate private key`
-
-`openssl req -new -x509 -days 3650 -key zeruelCA.key -out zeruelCA.crt -subj "/CN=zeruelproxy CA/C=US" # Create self-signed certificate`
+openssl req -new -x509 -days 3650 -key zeruelCA.key -out zeruelCA.crt -subj "/CN=zeruelproxy CA/C=US" # Create self-signed certificate
 
 
 NOTE: If you want a more detailed guide on how to setup your own CA I highly recommend reading through this [gist](https://gist.github.com/soarez/9688998)
@@ -172,7 +171,7 @@ This new certificate can now be installed in our browser so that it is trusted a
 
 The proxy server must essentially impersonate every CA out there, which means that it needs to generate and sign certificates for each host we visit from the browser.
 
-For that, it needs to:
+For that, it needs to...
 
 Generate a new key pair
 
