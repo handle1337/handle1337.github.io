@@ -166,7 +166,7 @@ openssl genrsa -out zeruelCA.key 2048 # Generate private key
 openssl req -new -x509 -days 3650 -key zeruelCA.key -out zeruelCA.crt -subj "/CN=zeruelproxy CA/C=US" # Create self-signed certificate
 {% endhighlight %}
 
-NOTE: If you want a more detailed guide on how to setup your own CA I highly recommend reading through this [gist:](https://gist.github.com/soarez/9688998)
+NOTE: If you want a more detailed guide on how to setup your own CA I highly recommend reading through this [gist](https://gist.github.com/soarez/9688998)
 
 This new certificate can now be installed in our browser so that it is trusted and we can move on to the next challenge.
 
