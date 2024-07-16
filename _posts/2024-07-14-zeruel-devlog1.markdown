@@ -144,7 +144,8 @@ From then on the server and browser both have this new private key, which will b
 
 To better illustrate this process here's a simplified diagram:
 
-![screen1]({{ site.baseurl }}media/screen1.png)
+![screen](/assets/images/screen1.png)
+
 
 ### Man-In-The-Middle
 
@@ -268,7 +269,7 @@ For that, it needs to:
 
 The proxy is now able to generate certificates for each host dynamically and can now handle HTTPS connections between it and the browser. Because we are our own CA and have access to the private key the proxy is able to decrypt all incoming data from the browser. 
 
-![screen2]({{ site.baseurl }}media/screen2.png)
+![screen](/assets/images/screen1.png)
 
 Now that the proxy can view and modify the cleartext request we can simply forward out version of it out to the remote server and get a response back!
 
