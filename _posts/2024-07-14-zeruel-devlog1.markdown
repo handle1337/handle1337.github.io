@@ -158,12 +158,12 @@ Suffice to say, would be quite difficult getting our hands on Google CA's privat
 
 However, there is one way we can circumvent all of this trouble and it's by using self-signed certificates!
 
-Anyone can become their own CA, create key pairs, and sign certificates. It's quite simple really, this is how Zeruel's CA certificate is created using OpenSSL:
+Anyone can become their own CA, create key pairs, and sign certificates. It's quite simple really, this is how Zeruel's CA certificate is created using OpenSSL
 
 
-openssl genrsa -out zeruelCA.key 2048 # Generate private key
+`openssl genrsa -out zeruelCA.key 2048 # Generate private key`
 
-openssl req -new -x509 -days 3650 -key zeruelCA.key -out zeruelCA.crt -subj "/CN=zeruelproxy CA/C=US" # Create self-signed certificate
+`openssl req -new -x509 -days 3650 -key zeruelCA.key -out zeruelCA.crt -subj "/CN=zeruelproxy CA/C=US" # Create self-signed certificate`
 
 
 NOTE: If you want a more detailed guide on how to setup your own CA I highly recommend reading through this [gist](https://gist.github.com/soarez/9688998)
@@ -174,7 +174,7 @@ The proxy server must essentially impersonate every CA out there, which means th
 
 For that, it needs to:
 
-- Generate a new key pair
+Generate a new key pair
 
 {% highlight python %}
     def generate_keypair(path=None):
@@ -185,7 +185,8 @@ For that, it needs to:
                 key_file.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key).decode("utf-8"))
         return key
 {% endhighlight %}
-- Create a Certificate Signing Request (CSR)
+
+Create a Certificate Signing Request (CSR)
 
 {% highlight python %}
     def generate_csr(self, hostname, key, path=None):
@@ -214,7 +215,7 @@ For that, it needs to:
         return csr
 {% endhighlight %}
 
-- Finally, generate the certificate
+Finally, generate the certificate
 
 
 {% highlight python %}
