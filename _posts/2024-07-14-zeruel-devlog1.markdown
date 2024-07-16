@@ -9,7 +9,7 @@ You can find the code for this project [here](https://github.com/handle1337/zeru
 
 # Zeruel Devlog 1
 
-Hi there! lately I have been working on a personal project I had the idea for some years ago. I thought it would be a good exercise since I'm getting back into software development and cybersecurity to try and finish a Burpsuite-like tool I've always wanted to make. Zeruel Proxy.
+Hi there! lately I have been working on a personal project I had the idea for some years ago. I thought it would be a good exercise since I'm getting back into software development and cybersecurity to try and finish a Burpsuite-like tool I've always wanted to make, Zeruel Proxy.
 
 The idea is simple, create a proxy capable of intercepting, modifying, and repeating requests on the fly. All through a simple GUI.
 
