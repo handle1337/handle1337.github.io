@@ -23,7 +23,7 @@ When writing the proxy I decided to use sockets, admittedly I could've probably 
 
 ### HTTP
 
-First thigns first, let's setup our proxy server to capture and forward our requests to the remote server.
+First things first, let's setup our proxy server to capture and forward our requests to the remote server.
 
 {% highlight python %}
     def run(self):
