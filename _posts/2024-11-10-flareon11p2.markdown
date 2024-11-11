@@ -11,8 +11,8 @@ We have the following executable
 
 Time to reverse!
 
-![screen2]({{ site.baseurl }}/assets/lib/images/flareon/20241008054212.png)
-![[Pasted image ]]
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008054212.png)
+
 
 Pretty quick the goal becomes apparent. reach this conditional path.
 
@@ -24,17 +24,14 @@ Around this point I switched to Ghidra since the pseudocode for golang was much 
 
 ![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008055332.png)
 
-
 It's pretty apparent that `main_b` is an error handling function.
 Looking at it's references I pieced together the requirements to reach `main_a` but honestly it took me an embarrassing amount of time because of this one rabbit hole:
 
 ![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008063047.png)
 
-
 I spent a lot of time overthinking the whole challenge but then I got ahold of myself the more I looked at `main_a` and realized this was so much simpler than I thought! 
 
 ![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008055541.png)
-
 
 `main_a` takes the input when the last prompt `checksum: ` is displayed. Then it xor encrypts `checksum` with the key `FlareOn2024`.
 
