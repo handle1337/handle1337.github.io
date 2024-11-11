@@ -1,0 +1,94 @@
+---
+layout: default
+title:  "Flareon11 Captcha"
+date:   2024-11-10 10:45:45 -0600
+categories: jekyll update
+---
+
+We have the following function that generates the flag
+
+{% highlight python %}
+def GenerateFlagText(x, y):
+
+    key = x + y*20
+
+    encoded = "\xa5\xb7\xbe\xb1\xbd\xbf\xb7\x8d\xa6\xbd\x8d\xe3\xe3\x92\xb4\xbe\xb3\xa0\xb7\xff\xbd\xbc\xfc\xb1\xbd\xbf"
+
+    return ''.join([chr(ord(c) ^ key) for c in encoded])
+{% endhighlight %}
+
+We can see that it is called in `main()` if the following condition is met:
+
+{% highlight python %}
+        if not victory_mode:
+
+            # are they on the victory tile? if so do victory
+
+            if player.x == victory_tile.x and player.y == victory_tile.y:
+
+                victory_mode = True
+
+                flag_text = GenerateFlagText(player.x, player.y)
+
+                flag_text_surface = flagfont.render(flag_text, False, pygame.Color('black'))
+
+                print("%s" % flag_text)
+{% endhighlight %}
+
+If we check constant definitions at the top of the file we find that `victory_tile = pygame.Vector2(10, 10)`. 
+
+So looking back at `GenerateFlagText` we know that it takes the `x,y` coordinates of the player which will be `10,10` which we can infer from the code. The key would then be `10+10*20` which is `210`.
+
+{% highlight python %}
+>>> key = 210
+>>> encoded = "\xa5\xb7\xbe\xb1\xbd\xbf\xb7\x8d\xa6\xbd\x8d\xe3\xe3\x92\xb4\xbe\xb3\xa0\xb7\xff\xbd\xbc\xfc\xb1\xbd\xbf"
+>>> ''.join([chr(ord(c) ^ key) for c in encoded])
+'welcome_to_11@flare-on.com'
+>>>
+{% endhighlight %}
+
+## Alternate solution
+
+We have the block class which has the parameter `passable`.
+
+{% highlight python %}
+class Block(pygame.sprite.Sprite):
+
+    def __init__(self, x, y, passable):
+
+        super().__init__()
+
+        ...
+        ```
+{% endhighlight %}
+
+We also have a huge array of blocks declared in `BuildBlocks()`
+
+{% highlight python %}
+def BuildBlocks():
+
+    blockset = [
+
+        Block(3, 2, False),
+
+        Block(4, 2, False),
+
+        Block(5, 2, False),
+
+        Block(6, 2, False),
+
+        Block(7, 2, False),
+
+        Block(8, 2, False),
+        ...
+{% endhighlight %}
+
+Looking at the array we can see that 2 blocks have `passable` set to `True`
+
+Keep in mind in pygame `0,0` is The top left of the window
+
+`Block(15, 4, True),`
+`Block(13, 10, True),`
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20240927190955.png)
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20240927191027.png)

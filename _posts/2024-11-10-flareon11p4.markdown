@@ -1,0 +1,149 @@
+---
+layout: default
+title:  "Flareon11 Meme Maker 3000"
+date:   2024-11-10 10:45:45 -0600
+categories: jekyll update
+---
+
+
+We're presented with a huge js wall of text, we pass it through https://deobfuscate.io/ and get the following output:
+
+{% highlight javascript %}
+  a0a = function () {
+    return u;
+  };
+  return a0a();
+}
+function a0f() {
+  const q = a0p;
+  document[q(52569) + 'mentBy' + 'Id']('captio' + 'n1') [q(3926)] = !![],
+  document[q(52569) + 'mentBy' + 'Id'](q(84859) + 'n2') [q(3926)] = !![],
+  document[q(52569) + q(73335) + 'Id']('captio' + 'n3') ['hidden'] = !![];
+  const a = document[q(52569) + q(73335) + 'Id']('meme-t' + 'emplat' + 'e');
+  var b = a[q(15263)][q(95627)]('.') [0];
+  a0d[b][q(8136) + 'h'](
+    function (c, d) {
+      const r = q;
+      var e = document['getEle' + r(73335) + 'Id'](r(84859) + 'n' + (d + 1));
+      e[r(3926)] = ![],
+      e['style'][r(17269)] = a0d[b][d][0],
+      e['style'][r(88249)] = a0d[b][d][1],
+      e[r(69466) + r(75179)] = a0c[Math[r(16279)](Math[r(28352)]() * (a0c[r(87117)] - 1))];
+    }
+  );
+}
+a0f();
+function a0b(a, b) {
+  const c = a0a();
+  return a0b = function (d, e) {
+    d = d - 475;
+    let f = c[d];
+    return f;
+  },
+  a0b(a, b);
+}
+const a0g = document[a0p(52569) + a0p(73335) + 'Id'](a0p(7063) + a0p(61697)),
+a0h = document[a0p(52569) + a0p(73335) + 'Id'](a0p(69287) + a0p(50870) + 'er'),
+a0i = document[a0p(52569) + 'mentBy' + 'Id'](a0p(64291)),
+a0j = document[a0p(52569) + 'mentBy' + 'Id'](a0p(67415) + a0p(95610) + 'e');
+a0g[a0p(98091)] = a0e[a0j['value']],
+a0j[a0p(51076) + a0p(95090) + 'ener'](
+  a0p(18165),
+  () => {
+    const s = a0p;
+    a0g[s(98091)] = a0e[a0j[s(15263)]],
+    a0g[s(2589)] = a0j[s(15263)],
+    a0f();
+  }
+),
+...
+{% endhighlight %}
+
+
+That's still pretty unreadable.
+
+To give me a better idea of the flow of the code I used `alert()` with different strings on the first line of each function. Quickly I found out that every time a caption was edited `a0k()` was called.
+
+{% highlight javascript %}
+function a0k() {
+
+  const t = a0p, a = a0g[t(2589)].split("/")[t(2024)]();
+
+  if (a !== Object[t(22981)](a0e)[5]) return;
+
+  const b = a0l.textContent, c = a0m[t(69466) + t(75179)], d = a0n.textContent;
+
+  if (a0c[t(77091) + "f"](b) == 14 && a0c[t(77091) + "f"](c) == a0c[t(87117)] - 1 && a0c[t(77091) + "f"](d) == 22) {
+
+    var e = (new Date)[t(67914) + "e"]();
+
+    while ((new Date)[t(67914) + "e"]() < e + 3e3) {}
+
+    var f = d[3] + "h" + a[10] + b[2] + a[3] + c[5] + c[c[t(87117)] - 1] + "5" + a[3] + "4" + a[3] + c[2] + c[4] + c[3] + "3" + d[2] + a[3] + "j4" + a0c[1][2] + d[4] + "5" + c[2] + d[5] + "1" + c[11] + "7" + a0c[21][1] + b[t(89657) + "e"](" ", "-") + a[11] + a0c[4][t(39554) + t(91499)](12, 15);
+
+    f = f[t(82940) + t(35943)](), alert(atob(t(85547) + t(19490) + "YXRpb2" + t(94350) + t(43672) + t(91799) + t(68036)) + f);
+
+  }
+}
+const a0l = document[a0p(52569) + a0p(73335) + "Id"]("caption1"), a0m = document[a0p(52569) + a0p(73335) + "Id"](a0p(84859) + "n2"), a0n = document.getElementById(a0p(84859) + "n3");
+
+a0l["addEve" + a0p(95090) + "ener"]("keyup", () => {
+  a0k();
+}), a0m[a0p(51076) + a0p(95090) + a0p(97839)](a0p(46837), () => {
+  a0k();
+}), a0n[a0p(51076) + a0p(95090) + a0p(97839)](a0p(46837), () => {
+  a0k();
+
+});
+{% endhighlight %}
+
+
+The variable `f` immediately stands out, it is very clearly a string, most likely the flag!
+
+I tried using `console.log(f)` but nothing, so then I deleted the `if statements`and was able to pop an alert but still ran into a bit of an issue.
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241010201233.png)
+
+At this point I'm certain I'm on the right path so I begin digging further.
+
+{% highlight javascript %}
+if (a !== Object[t(22981)](a0e)[5]) return;
+{% endhighlight %}
+
+
+I start by printing out the values being compared. Here `Object[t(22981)](a0e)[5]` is equivalent to: `boy_friend0.jpg`. 
+
+{% highlight javascript %}
+const b = a0l.textContent, c = a0m[t(69466) + t(75179)], d = a0n.textContent;
+
+if (a0c[t(77091) + "f"](b) == 14 && a0c[t(77091) + "f"](c) == a0c[t(87117)] - 1 && a0c[t(77091) + "f"](d) == 22) {...}
+{% endhighlight %}
+
+
+`a0c` is an array with 26 entries: 
+{% highlight javascript %}
+[ "When you find a buffer overflow in legacy code", "Reverse Engineer", "When you decompile the obfuscated code and it makes perfect sense", "Me after a week of reverse engineering", "When your decompiler crashes", "It's not a bug, it'a a feature", "Security 'Expert'", "AI", "That's great, but can you hack it?", "When your code compiles for the first time", … ]
+{% endhighlight %}
+
+
+later in the code we can see that `b,c, and d` are set to the current value of the captions.
+
+{% highlight javascript %}
+const a0l = document[a0p(52569) + a0p(73335) + "Id"]("caption1"), a0m = document[a0p(52569) + a0p(73335) + "Id"](a0p(84859) + "n2"), a0n = document.getElementById(a0p(84859) + "n3");
+{% endhighlight %}
+
+
+console output:
+{% highlight javascript %}
+-1 == 14  // -1 means there's no matches in the array of captions
+25 == 25  
+-1 == 22
+{% endhighlight %}
+
+
+So in order to get the flag the image selected must be `boy_friend0.jpg` and  captions 1,2,3 need to match `a0c[14],a0c[25],a0c[22]` respectively.
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241010203012.png)
+
+
+Flag: `wh0a_it5_4_cru3l_j4va5cr1p7@flare-on.com` (must be lowercase)

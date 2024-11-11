@@ -1,0 +1,55 @@
+---
+layout: default
+title:  "Flareon11 checksum"
+date:   2024-11-10 10:45:45 -0600
+categories: jekyll update
+---
+
+We have the following executable
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008052753.png)
+
+Time to reverse!
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/20241008054212.png)
+![[Pasted image ]]
+
+Pretty quick the goal becomes apparent. reach this conditional path.
+
+I've never reversed golang executables before, so looking at this IDA output was pretty intimidating at first, but as I went on I began to get more comfortable with it's quirks. If you spend a little bit of time on it, it becomes pretty clear I promise 😅
+
+After labeling some variables I moved onto the logic. There's 2 functions that become of interest almost immediately, `main_b`, and `main_a`
+
+Around this point I switched to Ghidra since the pseudocode for golang was much cleaner + free plug-ins, at the end I ended up jumping back and forth between the two since sometimes one would represent things better than the other.
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008055332.png)
+
+
+It's pretty apparent that `main_b` is an error handling function.
+Looking at it's references I pieced together the requirements to reach `main_a` but honestly it took me an embarrassing amount of time because of this one rabbit hole:
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008063047.png)
+
+
+I spent a lot of time overthinking the whole challenge but then I got ahold of myself the more I looked at `main_a` and realized this was so much simpler than I thought! 
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008055541.png)
+
+
+`main_a` takes the input when the last prompt `checksum: ` is displayed. Then it xor encrypts `checksum` with the key `FlareOn2024`.
+
+Once it is encrypted, the result is base64 encoded and the program checks whether the two base64 strings match.
+
+So now all that's left to do is follow these steps in reverse!
+
+Shoutout to cyberchef
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008065645.png)
+
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008065959.png)
+
+
+Success!!! but we still need the flag....
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008070107.png)
+
+Ah there it is!
+![screen2]({{ site.baseurl }}/assets/lib/images/flareon/Pasted image 20241008070136.png)
